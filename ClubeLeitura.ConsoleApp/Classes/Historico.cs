@@ -13,6 +13,7 @@ namespace ClubeLeitura.ConsoleApp.Classes
         Revista[] _historicoRevistas = new Revista[200];
         Amigo[] _historicoAmigos = new Amigo[50];
         Caixa[] _historicoCaixas = new Caixa[10];
+        Emprestimo[] _historicoDasReservas = new Emprestimo[50];
 
         public Emprestimo[] HistoricoEmprestimos { get { return _historico; } set { _historico = value; } }
         public Revista[] HistoricoRevistas { get { return _historicoRevistas; } set { _historicoRevistas = value; } }
@@ -32,12 +33,22 @@ namespace ClubeLeitura.ConsoleApp.Classes
                 _historicoCaixas = value;
             }
         }
-
-
-
-        public void ExibirHistorico()
+        public Emprestimo[] HistoricoDasReservas
         {
-            Console.Clear();
+            get
+            {
+                return _historicoDasReservas;
+            }
+            set
+            {
+                _historicoDasReservas = value;
+            }
+        } 
+
+
+
+        public void ExibirHistoricoEmprestimos()
+        {
 
             if (_historico[0] == null)
             {
@@ -67,14 +78,14 @@ namespace ClubeLeitura.ConsoleApp.Classes
                            $"                                                                    \n\r" +
                            $"Coleção..............:  {registro.RevistaEmprestada.TipoColecao}    \n\r" +
                            $"Edição Nº............:  {registro.RevistaEmprestada.NumeroEdicao}    \n\r" +
-                           $"Ano..................:  {registro.RevistaEmprestada.Ano}                 \n\r" +
-                           $"                                                                          \n\r" +
-                           $"Caixa:                                                                     \n\r" +
+                           $"Ano..................:  {registro.RevistaEmprestada.Ano}               \n\r" +
+                           $"                                                                        \n\r" +
+                           $"Caixa:                                                                   \n\r" +
                            $"Caixa Nº.............:  {registro.RevistaEmprestada.Caixa.Numero}        \n\r" +
                            $"Etiqueta.............:  {registro.RevistaEmprestada.Caixa.Etiqueta}      \n\r" +
                            $"Cor da Caixa.........:  {registro.RevistaEmprestada.Caixa.Cor}           \n\r" +
                            $"                                                                  \n\r" +
-                           $"Data que Pegou.......:  {registro.dataQpegou:dd/MM/yyyy}          \n\r" +
+                           $"Data que pegou.......:  {registro.dataQpegou:dd/MM/yyyy}          \n\r" +
                            $"Data de Devolução....:  {registro.dataDevolucao:dd/MM/yyyy}       \n\r" +
                            $"                                                                  \n\r" +
                            $"Status...............:  {registro.StatusDoEmprestimo}             \n\r" +
@@ -91,7 +102,7 @@ namespace ClubeLeitura.ConsoleApp.Classes
         }
 
         int count = 0;
-        public void GuardarRegistro(Emprestimo registro, int mes)
+        public void GuardarRegistroEmprestimo(Emprestimo registro, int mes)
         {
             HistoricoEmprestimos[count] = registro;
             count++;
@@ -196,9 +207,6 @@ namespace ClubeLeitura.ConsoleApp.Classes
             Console.ResetColor();
         }
 
-
-
-  
         private void GuardarHistoricoMes(int mes)
         {
             switch (mes)
@@ -242,6 +250,8 @@ namespace ClubeLeitura.ConsoleApp.Classes
             }
          }
 
+
+
         int countRev = 0;
         public void GuardarRegistroRevistas(Revista rev)
         {
@@ -263,13 +273,18 @@ namespace ClubeLeitura.ConsoleApp.Classes
             countCaixa++;
         }
 
+        int countReserva = 0;
+        public void GuardarRegistroDasReservas(Emprestimo reserva)
+        {
+            HistoricoDasReservas[countReserva] = reserva;
+            countReserva++;
+        }
+        
 
 
 
         public void ExibirRevistasRegistradas()
         {
-            Console.Clear();
-           
             if (_historicoRevistas[0] == null)
             {
                 Console.WriteLine("Histórico de revistas está vazio");
@@ -283,33 +298,61 @@ namespace ClubeLeitura.ConsoleApp.Classes
                 {
                     if (HistoricoRevistas[i] != null)
                     {
-                        Console.WriteLine( $"============================================             \n\r"+
-                                           $"Índice............: {i}                                  \n\r"+                                          
-                                           $"                                                         \n\r"+
-                                           $"Tipo da Coleção...: {HistoricoRevistas[i].TipoColecao}   \n\r"+
-                                           $"Edição Nº.........: {HistoricoRevistas[i].NumeroEdicao}  \n\r"+
-                                           $"Ano...............: {HistoricoRevistas[i].Ano}           \n\r"+
-                                           $"                                                         \n\r"+
-                                           $"Caixa                                                    \n\r"+
-                                           $"Cor...............: {HistoricoRevistas[i].Caixa.Cor}     \n\r"+
-                                           $"Etiqueta..........: {HistoricoRevistas[i].Caixa.Etiqueta}\n\r"+
-                                           $"Número............: {HistoricoRevistas[i].Caixa.Numero}  \n\r"+
-                                           $"============================================"
-                         ); 
+
+                        if (HistoricoDasReservas[i] != null)
+                        {
+
+                            if (HistoricoDasReservas[i].RevistaEmprestada.disponibilidade != "Reservado")
+                            {
+                                Console.WriteLine($"============================================             \n\r" +
+                                                $"Índice............: {i}                                  \n\r" +
+                                                $"                                                         \n\r" +
+                                                $"Tipo da Coleção...: {HistoricoRevistas[i].TipoColecao}   \n\r" +
+                                                $"Edição Nº.........: {HistoricoRevistas[i].NumeroEdicao}  \n\r" +
+                                                $"Ano...............: {HistoricoRevistas[i].Ano}           \n\r" +
+                                                $"Categoria.........: {HistoricoRevistas[i].CategRevista.NomeCategoria} \n\r" +
+                                                $"                                                         \n\r" +
+                                                $"Caixa                                                    \n\r" +
+                                                $"Cor...............: {HistoricoRevistas[i].Caixa.Cor}     \n\r" +
+                                                $"Etiqueta..........: {HistoricoRevistas[i].Caixa.Etiqueta}\n\r" +
+                                                $"Número............: {HistoricoRevistas[i].Caixa.Numero}  \n\r" +
+                                                $"                                                          \n\r" +
+                                                $"Disponibilidade...: {HistoricoRevistas[i].disponibilidade} \n\r" +
+                                                $"============================================"
+                                );
+                            }
+                        
+                        }
+                        else
+                            Console.WriteLine($"============================================             \n\r" +
+                                             $"Índice............: {i}                                  \n\r" +
+                                             $"                                                         \n\r" +
+                                             $"Tipo da Coleção...: {HistoricoRevistas[i].TipoColecao}   \n\r" +
+                                             $"Edição Nº.........: {HistoricoRevistas[i].NumeroEdicao}  \n\r" +
+                                             $"Ano...............: {HistoricoRevistas[i].Ano}           \n\r" +
+                                             $"Categoria.........: {HistoricoRevistas[i].CategRevista.NomeCategoria} \n\r" +
+                                             $"                                                         \n\r" +
+                                             $"Caixa                                                    \n\r" +
+                                             $"Cor...............: {HistoricoRevistas[i].Caixa.Cor}     \n\r" +
+                                             $"Etiqueta..........: {HistoricoRevistas[i].Caixa.Etiqueta}\n\r" +
+                                             $"Número............: {HistoricoRevistas[i].Caixa.Numero}  \n\r" +
+                                             $"                                                         \n\r" +
+                                             $"Disponibilidade...: {HistoricoRevistas[i].disponibilidade} \n\r" +
+                                             $"============================================"
+                             );
                     }
                     
                     else
                         break;
                 }
-                Console.ResetColor();
 
+                Console.ResetColor();
             }
            
         }
 
         public void ExibirCaixasRegistradas()
         {
-            Console.Clear();
 
             if (_historicoCaixas[0] == null)
             {
@@ -344,7 +387,6 @@ namespace ClubeLeitura.ConsoleApp.Classes
 
         public void ExibirAmigosRegistrados()
         {
-            Console.Clear();
 
             if (_historicoAmigos[0] == null)
             {
@@ -370,6 +412,8 @@ namespace ClubeLeitura.ConsoleApp.Classes
                                            $"Rua..................: {HistoricoAmigos[i].Endereco.Rua}        \n\r" +
                                            $"Bairro:..............: {HistoricoAmigos[i].Endereco.Bairro}     \n\r" +
                                            $"Número:..............: {HistoricoAmigos[i].Endereco.NumeroCasa} \n\r" +
+                                           $"                                                                \n\r" +
+                                           $"Multa Pendente:......: {HistoricoAmigos[i].CobrarMulta} \n\r" +
                                            $"============================================"
                          );
                     }
@@ -381,6 +425,153 @@ namespace ClubeLeitura.ConsoleApp.Classes
             }
         }
 
+        public void ExibirAmigosComMultaPendente()
+        {
+            if (_historicoAmigos[0] == null)
+            {
+                Console.WriteLine("Histórico de amigos está vazio");
+                return;
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.DarkCyan;
+
+                for (int i = 0; i < HistoricoAmigos.Length; i++)
+                {
+                    if (HistoricoAmigos[i] != null)
+                    {
+                        if (HistoricoAmigos[i].CobrarMulta == Amigo.Multa.Sim)
+                        {
+                            Console.WriteLine($"============================================                     \n\r" +
+                                                $"Índice...............: {i}                                      \n\r" +
+                                                $"                                                                \n\r" +
+                                                $"Nome do Amigo........: {HistoricoAmigos[i].Nome}                \n\r" +
+                                                $"Nome do Responsável..: {HistoricoAmigos[i].NomeResponsavel}     \n\r" +
+                                                $"Telefone.............: {HistoricoAmigos[i].Telefone}            \n\r" +
+                                                $"                                                                \n\r" +
+                                                $"Endereço                                                        \n\r" +
+                                                $"Rua..................: {HistoricoAmigos[i].Endereco.Rua}        \n\r" +
+                                                $"Bairro:..............: {HistoricoAmigos[i].Endereco.Bairro}     \n\r" +
+                                                $"Número:..............: {HistoricoAmigos[i].Endereco.NumeroCasa} \n\r" +
+                                                $"                                                                \n\r" +
+                                                $"Multa Pendente:......: {HistoricoAmigos[i].CobrarMulta} \n\r" +
+                                                $"============================================"
+                                );
+                            
+                        }
+                        else
+                        {
+                            Console.ResetColor();
+                            Console.WriteLine("Não há amigos com multa pendente");
+                            return;
+                        }
+                    }
+
+                    else
+                        break;
+                }
+                Console.ResetColor();
+            }
+        }
+
+        public void ExibirAmigosSemMultas()
+        {
+            if (_historicoAmigos[0] == null)
+            {
+                Console.WriteLine("Histórico de amigos está vazio");
+                return;
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.DarkCyan;
+
+                for (int i = 0; i < HistoricoAmigos.Length; i++)
+                {
+                    if (HistoricoAmigos[i] != null)
+                    {
+                        if (HistoricoAmigos[i].CobrarMulta == Amigo.Multa.Não)
+                        {
+                            Console.WriteLine("Existem amigos com multa pendente. Estes não serão exibidos aqui\n");
+                            Console.WriteLine($"============================================                     \n\r" +
+                                               $"Índice...............: {i}                                      \n\r" +
+                                               $"                                                                \n\r" +
+                                               $"Nome do Amigo........: {HistoricoAmigos[i].Nome}                \n\r" +
+                                               $"Nome do Responsável..: {HistoricoAmigos[i].NomeResponsavel}     \n\r" +
+                                               $"Telefone.............: {HistoricoAmigos[i].Telefone}            \n\r" +
+                                               $"                                                                \n\r" +
+                                               $"Endereço                                                        \n\r" +
+                                               $"Rua..................: {HistoricoAmigos[i].Endereco.Rua}        \n\r" +
+                                               $"Bairro:..............: {HistoricoAmigos[i].Endereco.Bairro}     \n\r" +
+                                               $"Número:..............: {HistoricoAmigos[i].Endereco.NumeroCasa} \n\r" +
+                                               $"                                                                \n\r" +
+                                               $"Multa Pendente:......: {HistoricoAmigos[i].CobrarMulta} \n\r" +
+                                               $"============================================"
+                             );
+                        }
+                    }
+
+                    else
+                        break;
+                }
+                Console.ResetColor();
+            }
+        }
+
+
+        public void ExibirHistoricoReservas()
+        {
+            if (HistoricoDasReservas[0] == null)
+            {
+                Console.WriteLine("Histórico de empréstimos vazio");
+                return;
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+
+                foreach (var registro in HistoricoDasReservas)
+                {
+                    if (registro != null)
+                    {
+                        Console.WriteLine(
+
+                           $"===============================================                   \n\r" +
+                           $"Registro Número......:  {registro.ID}                             \n\r" +
+                           $"Nome de quem Pegou...:  {registro.AmigoQPegou.Nome}               \n\r" +
+                           $"Nome do Responsável..:  {registro.AmigoQPegou.NomeResponsavel}    \n\r" +
+                           $"Telefone.............:  {registro.AmigoQPegou.Telefone}           \n\r" +
+                           $"                                                                  \n\r" +
+                           $"Endereço:                                                         \n\r" +
+                           $"Rua..................:  {registro.AmigoQPegou.Endereco.Rua}       \n\r" +
+                           $"Bairro...............:  {registro.AmigoQPegou.Endereco.Bairro}    \n\r" +
+                           $"Casa Nº..............:  {registro.AmigoQPegou.Endereco.NumeroCasa} \n\r" +
+                           $"                                                                    \n\r" +
+                           $"Coleção..............:  {registro.RevistaEmprestada.TipoColecao}    \n\r" +
+                           $"Edição Nº............:  {registro.RevistaEmprestada.NumeroEdicao}    \n\r" +
+                           $"Ano..................:  {registro.RevistaEmprestada.Ano}              \n\r" +
+                           $"                                                                      \n\r" +
+                           $"Caixa:                                                                \n\r" +
+                           $"Caixa Nº.............:  {registro.RevistaEmprestada.Caixa.Numero}     \n\r" +
+                           $"Etiqueta.............:  {registro.RevistaEmprestada.Caixa.Etiqueta}   \n\r" +
+                           $"Cor da Caixa.........:  {registro.RevistaEmprestada.Caixa.Cor}             \n\r" +
+                           $"                                                                             \n\r" +
+                           $"Data que vai pegar...:  {registro.dataQpegou:dd/MM/yyyy}                        \n\r" +
+                           $"Valido até...........:  {registro.DataValidade:dd/MM/yyyy}                        \n\r" +
+                           $"Disponibilidade......:  {registro.RevistaEmprestada.disponibilidade:dd/MM/yyyy} \n\r" +
+                           $"                                                                  \n\r" +
+                           $"Status...............:  {registro.StatusDoEmprestimo}             \n\r" +
+                           $"==============================================="
+
+                        );
+                    }
+                    else
+                        break;
+                }
+
+                Console.ResetColor();
+            }
+
+        }
 
 
 
@@ -424,6 +615,48 @@ namespace ClubeLeitura.ConsoleApp.Classes
             }
         }
 
+        public void ExcluirReservaDoRegistro(int indice)
+        {
+            Reserva[] auxiliar = new Reserva[HistoricoDasReservas.Length];
+
+            int contAux = 0;
+
+            for (int i = 0; i < HistoricoDasReservas.Length; i++)
+            {
+                if (HistoricoDasReservas[i] != null)
+                {
+                    if (HistoricoDasReservas[i] != HistoricoDasReservas[indice])
+                    {
+                        auxiliar[contAux] = new();
+                        auxiliar[contAux].Emprestimo = HistoricoDasReservas[i];
+
+                        contAux++;
+                    }
+                    else
+                        continue;
+                }
+                else
+                    break;
+            }
+
+            // devolvendo do auxiliar para o registro normal
+            for (int i = 0; i < HistoricoDasReservas.Length; i++)
+            {
+                HistoricoDasReservas[i] = null;
+            }
+
+            int conAuxReg = 0;
+            for (int i = 0; i < HistoricoDasReservas.Length; i++)
+            {
+                if (auxiliar[i] != null)
+                {
+                    HistoricoDasReservas[conAuxReg] = auxiliar[i].Emprestimo;
+                    conAuxReg++;
+                }
+                else
+                    break;
+            }
+        }
 
 
 
@@ -494,5 +727,6 @@ namespace ClubeLeitura.ConsoleApp.Classes
             }
         }
 
+       
     }
 }

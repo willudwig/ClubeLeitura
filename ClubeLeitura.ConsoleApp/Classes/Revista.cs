@@ -12,7 +12,11 @@ namespace ClubeLeitura.ConsoleApp.Classes
         int _numeroEdicao;
         int _ano;
         Caixa _caixa = new();
+        Categoria _categoria = new();
 
+
+        public string disponibilidade = "Disponível";
+       
         public string TipoColecao
         {
             get { return _tipoColecao; }
@@ -35,6 +39,18 @@ namespace ClubeLeitura.ConsoleApp.Classes
         {
             get { return _caixa;}
             set { _caixa = value; }
+        }
+
+        public Categoria CategRevista
+        {
+            get
+            {
+                return _categoria;
+            }
+            set
+            {
+                _categoria = value;
+            }
         }
 
     }

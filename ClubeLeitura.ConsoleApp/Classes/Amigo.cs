@@ -12,6 +12,17 @@ namespace ClubeLeitura.ConsoleApp.Classes
         string _nomeResponsavel;
         int _telefone;
         Localizacao _endereco = new ();
+        Multa _multa = Multa.Não;
+
+
+        public enum Multa { Sim, Não }
+
+      
+        public Multa CobrarMulta
+        {
+            get { return _multa; }
+            set { _multa = value; }
+        }
 
         public string Nome 
         { 
@@ -48,6 +59,7 @@ namespace ClubeLeitura.ConsoleApp.Classes
                 _telefone = value; 
             } 
         }
+
         public Localizacao Endereco { get { return _endereco; } set { _endereco = value; } }
     }
 }

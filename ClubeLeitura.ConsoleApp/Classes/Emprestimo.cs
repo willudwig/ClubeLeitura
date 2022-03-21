@@ -12,14 +12,23 @@ namespace ClubeLeitura.ConsoleApp.Classes
         Amigo _amigoQpegou = new();
         Status _status;
         int _id;
+        DateTime _dataValidade;
+
         //====================================
 
         //Públicos
         public enum Status { Aberto, Fechado }
+
         public DateTime dataQpegou = new();
         public DateTime dataDevolucao = new();
+        public DateTime DataValidade
+        {
+            get { return _dataValidade; }
+            set { _dataValidade = value; }
+        }
 
         public Revista RevistaEmprestada;
+       
         //====================================
 
 
@@ -35,6 +44,7 @@ namespace ClubeLeitura.ConsoleApp.Classes
             get { return _status; }
             set { _status = value; }
         }
+
         public int ID
         {
             get { return _id; }

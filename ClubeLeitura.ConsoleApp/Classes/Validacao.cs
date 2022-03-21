@@ -20,9 +20,9 @@ namespace ClubeLeitura.ConsoleApp.Classes
             else
                 return false;
 
-            if (!dataDevolve.Equals(0) && dataDevolve < dataPegou)
+            if (!dataDevolve.Equals("") && dataDevolve < dataPegou)
             {
-                Console.WriteLine("\nData de devolução anterior a data que pegou. Mantenha o status aberto\n");
+                Console.WriteLine("\nData de devolução anterior a data que pegou. Status ainda em aberto\n");
                 return true;
             }
             else
@@ -41,6 +41,7 @@ namespace ClubeLeitura.ConsoleApp.Classes
         }
         //===========================================
 
+
         //Validação de campo String
         public bool ValidarInputString(string input)
         {
@@ -53,6 +54,7 @@ namespace ClubeLeitura.ConsoleApp.Classes
                 return false;
         }
         //=============================================
+
 
         //Validação de campo Telefone
         public bool ValidarInputTelefone(int input)
@@ -80,6 +82,7 @@ namespace ClubeLeitura.ConsoleApp.Classes
         }
         //========================================
 
+
         //Validação Opção Status Empréstimo
         public bool ValidarInputStatusEmprestimo(char input)
         {
@@ -93,10 +96,11 @@ namespace ClubeLeitura.ConsoleApp.Classes
         }
         //======================================================
 
+
         //Validação Input Opções do Menu
         public void ValidarInputOpcaoMenu(string opcao)
         {
-            if (opcao != "1" && opcao != "2" && opcao != "3" && opcao != "4" && opcao != "5" && opcao != "6" && opcao != "7" && opcao != "8" && opcao != "9" && opcao != "10" && opcao != "11")
+            if (opcao != "1" && opcao != "2" && opcao != "3" && opcao != "4" && opcao != "5" && opcao != "6" && opcao != "7" && opcao != "8" && opcao != "9" && opcao != "10" && opcao != "11" && opcao != "12" && opcao != "13" && opcao != "14" && opcao != "15")
             {
                 Console.WriteLine("\nOpção inválida\n");
                 Console.ReadKey();
@@ -104,7 +108,45 @@ namespace ClubeLeitura.ConsoleApp.Classes
             }
             
         }
-        //===============================================
+        //==================================================
+
+
+        //Validar Índice
+        public bool ValidarIndiceAmigoSelecionado(int indice, Amigo[] historicoAmigo)
+        {
+            if (historicoAmigo[indice] == null)
+            {
+                return true;
+            }
+            else
+
+                return false;
+        }
+
+        public bool ValidarIndiceRevistaSelecionada(int indice, Revista[] historicoRevista)
+        {
+            if (historicoRevista[indice] == null)
+            {
+                return true;
+            }
+            else
+
+                return false;
+        }
+
+        public bool ValidarIndiceRevistaSelecionada(int indice, Caixa[] historicoCaixa)
+        {
+           
+            if (historicoCaixa[indice] == null)
+            {
+                return true;
+            }
+            else
+
+                return false;
+        }
+        //=====================================================================================
+
 
     }
 }

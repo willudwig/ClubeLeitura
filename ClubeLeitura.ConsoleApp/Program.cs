@@ -7,13 +7,19 @@ namespace ClubeLeitura.ConsoleApp
     {
         internal static void Main(String[] args)
         {
+            Console.Title = "Clube da Leitura";
+
             Menu menu = new();
+
             Input_Output informe = new();
+
 
             while (true)
             {
                 menu.ApresentarOpcoes();
+
                 string opcao = "";
+
                 informe.InputarOpcao(opcao);
             }
 
